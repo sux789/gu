@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-
+use App\Console\Commands\Sd;
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -18,8 +18,24 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('test', function () {
-    \App\Services\Fetch\FetchCodeService::handle();
-    // \App\Services\Fetch\FetchCateTaskService::addTask(1);
-    //\App\Services\Fetch\FetchCateTaskService::addTask(700004);
-})->purpose('Display an inspiring quote');
+
+
+Artisan::command('sd {act=handle}', function ( Sd $sd) {
+    if($argv=$this->arguments()){
+        // dump($argv);
+    }
+    $class=get_class($sd);
+    $act = $this->argument('act');
+    if($act){
+        $this->info( "## exec $class->$act ##");
+    }
+
+    if(method_exists($this,$act)){
+        $this->$act();
+    }else{
+
+        $this->info ("# method $class->$act  not exists ");
+    }
+
+
+});
