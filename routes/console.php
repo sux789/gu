@@ -41,6 +41,6 @@ Artisan::command('sd {act=handle}', function (Sd $sd) {
 });
 
 
-Artisan::command('cron {act=handle}', function (\App\Console\Commands\Cron $cron) {
+Artisan::command('cron', function (\App\Console\Commands\Cron $cron) {
     $cron->handle();
 });

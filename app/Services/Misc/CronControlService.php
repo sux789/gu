@@ -75,7 +75,7 @@ class CronControlService
         $now = Date::now()->toDateTimeString();
         $checkTime = ($now >= $startTime && $now < $endTime);
         if (!$checkTime) {
-            echo "检查时间错误";
+            echo "#检查时间错误";
             return false;
         }
 

@@ -1,3 +1,3 @@
 cd `dirname $0`
-echo "当前执行`pwd`"
+# echo  "\n`date +$m%d%H%i%s``pwd`"
 php artisan cron >> ./cron.over.log

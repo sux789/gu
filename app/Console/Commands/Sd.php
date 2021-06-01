@@ -41,7 +41,8 @@ class Sd extends Command
         //$rs=CronStateService::exitsToday('xx');
         // $rs=SnapCronDailyInitService::handle();
         // print_r($rs);
-        CronControlService::handle();
+        // CronControlService::handle();
+        echo __CLASS__;
         return 0;
     }
 
@@ -71,7 +72,7 @@ class Sd extends Command
         self::$start_time = microtime(true);
     }
 
-    public function __destruct()
+    public function x__destruct()
     {
         static $printed = false;
         if ($printed) {
@@ -80,7 +81,7 @@ class Sd extends Command
 
         $printed = true;
         $spent_time = microtime(true) - self::$start_time;
-        echo "\n spent $spent_time\n";
+        // echo "\n spent $spent_time\n";
         if ($argv = $this->getArguments()) {
             print_r($argv);
         }
