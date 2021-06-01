@@ -37,7 +37,7 @@ class TxWebParserService
             $rs = self::parseRawLine($line);
             if (isset($rs[66])) {
                 $rs = Self::toAssoc($rs);
-                $rt[$rs['code']] = $rs;
+                $rt[$rs['symbol']] = $rs;
             }
         }
         return $rt;
@@ -62,22 +62,23 @@ class TxWebParserService
 
         if ($date = self::parseDate($data)) {
             $rt['date'] = $date;
-            $rt['fetch_time'] = date('Y-m-d H:i:s', strtotime($data[self::POS_TIME]));
-            $rt['title'] = $data[self::POS_NAME];
-            $rt['price_close'] = $data[self::POS_PRICE_NOW];
-            $rt['price_last'] = $data[self::POS_PRICE_LAST];
-            $rt['price_open'] = $data[self::POS_PRICE_OPEN];
-            $rt['price_top'] = $data[self::POS_PRICE_TOP];
-            $rt['price_bottom'] = $data[self::POS_PRICE_BOTTOM];
-            $rt['price_rate'] = floatval($data[self::POS_PRICE_RATE]);
+            $rt['trade_time'] = date('Y-m-d H:i:s', strtotime($data[self::POS_TIME]));
+            $rt['name'] = $data[self::POS_NAME];
+            $rt['trade'] = $data[self::POS_PRICE_NOW];
+            $rt['last'] = $data[self::POS_PRICE_LAST];
+            $rt['open'] = $data[self::POS_PRICE_OPEN];
+            $rt['high'] = $data[self::POS_PRICE_TOP];
+            $rt['low'] = $data[self::POS_PRICE_BOTTOM];
+            $rt['changepercent'] = floatval($data[self::POS_PRICE_RATE]);
             $rt['vol'] = $data[self::POS_VOL];
-            $rt['trading_rate'] = $data[self::POS_VOL_RATE];
+            $rt['turnoverratio'] = $data[self::POS_VOL_RATE];
             $rt['pe'] = $data[self::POS_PE];
-            $rt['tv'] = $data[self::POS_TV];
-            $rt['cv'] = $data[self::POS_CV];
-            $rt['limit_up_vol'] = $data[self::POS_SELL_1] < 0.01 ? $data[self::POS_BUY_1_VOL] : 0;
-            $rt['limit_down_vol'] = $data[self::POS_BUY_1] < 0.01 ? $data[self::POS_SELL_1_VOL] : 0;
-            $rt['code'] = $prefix . $data[2];
+            $rt['mktcap'] = $data[self::POS_TV];
+            $rt['nmc'] = $data[self::POS_CV];
+            $rt['over_buy'] = $data[self::POS_SELL_1] < 0.01 ? $data[self::POS_BUY_1_VOL] : 0;
+            //$rt['limit_down_vol'] = $data[self::POS_BUY_1] < 0.01 ? $data[self::POS_SELL_1_VOL] : 0;
+            $rt['symbol'] = $prefix . $data[2];
+            //$rt['fetch_time']=date('Y-m-d H:i:s');
         }
         return $rt;
     }

@@ -30,6 +30,6 @@ class QueryListener
 
         $sql = str_replace("?", "'%s'", $event->sql);
         $log = vsprintf($sql, $event->bindings);
-        // echo "\n", $log,"\n";
+        echo "\n", $log,"\n";
     }
 }

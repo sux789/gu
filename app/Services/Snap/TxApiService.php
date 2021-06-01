@@ -13,12 +13,22 @@ class TxApiService
         $rs = TxApiService::get(self::$defaultSymbolSet);
         $lastTime='';
         foreach ($rs as $item){
-            $lastTime=$item['fetch_time']??'';
+
+            $lastTime=$item['trade_time']??'';
+
             if($lastTime){
                 break;
             }
         }
         return $lastTime;
+    }
+
+    static function lastDate(){
+        // $week = date("w"); findInDb
+        $time= self::lastTime();
+        $info=explode(' ',$time);
+        return $info[0];
+
     }
 
     static function get($symbolSet)

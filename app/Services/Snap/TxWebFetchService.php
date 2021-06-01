@@ -12,8 +12,6 @@ class TxWebFetchService
     const URL_MAIN = 'http://qt.gtimg.cn/q=';
 
 
-
-
     static function multiGet($symbolSet)
     {
         $urls = self::getUrls($symbolSet);

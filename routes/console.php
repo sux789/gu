@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use App\Console\Commands\Sd;
+
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -19,23 +20,27 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-
-Artisan::command('sd {act=handle}', function ( Sd $sd) {
-    if($argv=$this->arguments()){
+Artisan::command('sd {act=handle}', function (Sd $sd) {
+    if ($argv = $this->arguments()) {
         // dump($argv);
     }
-    $class=get_class($sd);
+    $class = get_class($this);
     $act = $this->argument('act');
-    if($act){
-        $this->info( "## exec $class->$act ##");
+    if ($act) {
+        $this->info("## exec $class->$act ##");
     }
 
-    if(method_exists($this,$act)){
-        $this->$act();
-    }else{
+    if (method_exists($sd, $act)) {
+        $sd->$act();
+    } else {
 
-        $this->info ("# method $class->$act  not exists ");
+        $this->info("# method $class->$act  not exists ");
     }
 
 
+});
+
+
+Artisan::command('cron {act=handle}', function (\App\Console\Commands\Cron $cron) {
+    $cron->handle();
 });

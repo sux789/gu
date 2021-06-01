@@ -2,8 +2,20 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Crontab;
+use App\Models\Snap;
+use App\Models\Symbol;
+use App\Services\Misc\CronControlService;
+use App\Services\Misc\CronStateService;
+use App\Services\Snap\SnapAddService;
+use App\Services\Snap\SnapCronDailyFinishService;
+use App\Services\Snap\SnapCronDailyInitService;
+use App\Services\Snap\SnapSyncService;
 use App\Services\Snap\TxApiService;
+use App\Services\Symbol\ChgnSymbolService;
+use App\Services\Symbol\SymbolService;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 
 class Sd extends Command
 {
@@ -12,9 +24,24 @@ class Sd extends Command
     public function handle()
     {
 
+       /* $rs = TxApiService::get(['sh600030', 'sh600050']);
 
-        $rs=TxApiService::get(['sh600030','sh600050']);
-        print_r($rs) ;
+        foreach ($rs as $item) {
+            Snap::updateOrCreate(['symbol' => $item['symbol']], $item);
+        }*/
+        /*$s=new Symbol();
+        echo "getTable:",  $s->getTable(),"\n"; return 0;
+
+        $rs=SymbolService::listForFetch();*/
+        // $rs=SnapSyncService::runNew();
+        // $rs=SnapAddService::handle();
+        /*$rs=SnapCronDailyFinishService::handle();
+        $rs=SnapCronDailyFinishService::getSymbolSet();
+        */
+        //$rs=CronStateService::exitsToday('xx');
+        // $rs=SnapCronDailyInitService::handle();
+        // print_r($rs);
+        CronControlService::handle();
         return 0;
     }
 
@@ -40,6 +67,7 @@ class Sd extends Command
     public function __construct()
     {
         parent::__construct();
+        system('clear');
         self::$start_time = microtime(true);
     }
 
@@ -53,11 +81,13 @@ class Sd extends Command
         $printed = true;
         $spent_time = microtime(true) - self::$start_time;
         echo "\n spent $spent_time\n";
-        if($argv=$this->getArguments()){
+        if ($argv = $this->getArguments()) {
             print_r($argv);
         }
     }
-    function  act(){
+
+    function act()
+    {
         echo __FUNCTION__;
     }
 }
