@@ -28,7 +28,7 @@ class CronControlService
             'ons' => [
                 [
                     'begin' => '09:30',
-                    'end' => '09:41',
+                    'end' => '12:41',
                     'interval_minute' => 10, //  间隔分钟 0  是当天执行一次
                     'days' => [1, 2, 3, 4, 5], // 星期
                 ],
