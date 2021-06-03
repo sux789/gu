@@ -1,8 +1,10 @@
 <?php
 
 
-namespace App\Services\Snap;
+namespace App\Services\WebClient;
 
+
+use App\Services\Snap\TxSnapFetcher;
 
 class TxApiService
 {
@@ -11,22 +13,22 @@ class TxApiService
     static function lastTime()
     {
         $rs = TxApiService::get(self::$defaultSymbolSet);
-        $lastTime='';
-        foreach ($rs as $item){
+        $lastTime = '';
+        foreach ($rs as $item) {
 
-            $lastTime=$item['trade_time']??'';
+            $lastTime = $item['trade_time'] ?? '';
 
-            if($lastTime){
+            if ($lastTime) {
                 break;
             }
         }
         return $lastTime;
     }
 
-    static function lastDate(){
-        // $week = date("w"); findInDb
-        $time= self::lastTime();
-        $info=explode(' ',$time);
+    static function lastDate()
+    {
+        $time = self::lastTime();
+        $info = explode(' ', $time);
         return $info[0];
 
     }
@@ -37,10 +39,10 @@ class TxApiService
 
         $symbolSet = array_unique((array)$symbolSet);
         if ($symbolSet) {
-            $contents = TxWebFetchService::multiGet($symbolSet);
+            $contents = TxSnapFetcher::handle($symbolSet);
 
             foreach ($contents as $item) {
-                $rs = TxWebParserService::handle($item);
+                $rs = TxSnapParser::handle($item);
                 $rt = array_merge($rt, $rs);
             }
         }

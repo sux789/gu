@@ -4,8 +4,6 @@
 namespace App\Services\Fetch;
 
 use App\Services\Fetch;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
 use App\Models\Chgn;
 use Illuminate\Support\Facades\DB;
 

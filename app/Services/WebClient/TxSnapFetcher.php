@@ -5,14 +5,14 @@ namespace App\Services\Snap;
 
 
 use App\Common\Webgeter;
-use phpDocumentor\Reflection\Types\Self_;
 
-class TxWebFetchService
+
+class TxSnapFetcher
 {
     const URL_MAIN = 'http://qt.gtimg.cn/q=';
 
 
-    static function multiGet($symbolSet)
+    static function handle($symbolSet)
     {
         $urls = self::getUrls($symbolSet);
         return Webgeter::get($urls);

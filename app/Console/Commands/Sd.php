@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Crontab;
 use App\Models\Snap;
 use App\Models\Symbol;
+use App\Services\Cron\CronSnapService;
 use App\Services\Misc\CronControlService;
 use App\Services\Misc\CronStateService;
 use App\Services\Snap\SnapAddService;
@@ -42,6 +43,8 @@ class Sd extends Command
         // $rs=SnapCronDailyInitService::handle();
         // print_r($rs);
         // CronControlService::handle();
+       $rs= CronSnapService::hasInitToday();
+        var_dump($rs);
         echo __CLASS__;
         return 0;
     }

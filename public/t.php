@@ -2,5 +2,5 @@
 
 $a=['a'=>true,'b'=>false];
 
-$b=array_filter($a);
-print_r($b);
+$a=['ab','cd'];
+print_r(max($a));

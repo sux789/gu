@@ -1,10 +1,13 @@
 <?php
 
 
-namespace App\Services\Snap;
+namespace App\Services\WebClient;
 
-
-class TxWebParserService
+/**
+ * 腾讯股票快照解析器,
+ * 根据新浪改了数据库字段名,代码没有再修改
+ */
+class TxSnapParser
 {
 
     const POS_NAME = 1;
@@ -44,7 +47,7 @@ class TxWebParserService
     }
 
 
-    static function parseDate($data)
+    private static function parseDate($data)
     {
         $rt = '';
         if (isset($data[self::POS_TIME])) {
@@ -54,7 +57,7 @@ class TxWebParserService
     }
 
 
-    static function toAssoc($data)
+    private static function toAssoc($data)
     {
         $rt = [];
         $isSh = false !== array_search('sh', $data);

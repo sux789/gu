@@ -1,14 +1,18 @@
 <?php
 
 
-namespace App\Services\Misc;
+namespace App\Services\Cron;
 
-
-use App\Http\Controllers\Controller;
 use App\Models\Crontab as CrontabModel;
 use App\Services\Snap\SnapAddService;
 use Illuminate\Support\Facades\DB;
 
+
+/**
+ * 任务计划执行状态管理
+ * Class CronStateService
+ * @package App\Services\Cron
+ */
 class CronStateService
 {
     const STATE_START = 100;
@@ -23,7 +27,7 @@ class CronStateService
     ];
 
 
-    static function setStart($cmd, $remark = '')
+    static function setStarted($cmd, $remark = '')
     {
         $cron = CrontabModel::where('cmd', $cmd)->first();
         if ($cron) {
@@ -37,14 +41,14 @@ class CronStateService
         return CrontabModel::create($data);
     }
 
-    static function setAbort($cmd, $remark = '')
+    static function setAborted($cmd, $remark = '')
     {
         $state = self::STATE_ABORT;
         $data = compact('cmd', 'remark', 'state');
         CrontabModel::updateOrCreate(['cmd' => $cmd], $data);
     }
 
-    static function setFinish($cmd, $result = '')
+    static function setFinished($cmd, $result = '')
     {
         $state = self::STATE_FISHED;
         $data = compact('cmd', 'result', 'state');
@@ -54,11 +58,11 @@ class CronStateService
     static function setEmpty($cmd)
     {
         $state = self::STATE_EMPTY;
-        $data = compact('cmd',  'state');
+        $data = compact('cmd', 'state');
         CrontabModel::updateOrCreate(['cmd' => $cmd], $data);
     }
 
-    static function isFinish($cmd, $time = null)
+    static function isFinished($cmd, $time = null)
     {
         $cron = CrontabModel::where('cmd', $cmd);
         $cron->where('state', self::STATE_FISHED);

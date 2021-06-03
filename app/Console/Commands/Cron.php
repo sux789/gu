@@ -2,6 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Snap;
+use App\Services\Cron\CronRunService;
+use App\Services\Cron\CronStateService;
+use App\Services\Cron\SnapDayInitializer;
 use App\Services\Misc\CronControlService;
 use Illuminate\Console\Command;
 
@@ -38,8 +42,10 @@ class Cron extends Command
      */
     public function handle()
     {
-        CronControlService::handle();
+        CronRunService::handle();
 
         return 0;
     }
+
+
 }

@@ -44,3 +44,7 @@ Artisan::command('sd {act=handle}', function (Sd $sd) {
 Artisan::command('cron', function (\App\Console\Commands\Cron $cron) {
     $cron->handle();
 });
+Artisan::command('init_snap', function (\App\Console\Commands\Cron $cron) {
+    $cron->initDailySnap();
+});
+
