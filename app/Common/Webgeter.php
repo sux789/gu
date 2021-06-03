@@ -10,10 +10,12 @@ class Webgeter
 {
     static function get($urls, $callback = null)
     {
-        $rt = [];
+        $rt = null;
+        $isArray=is_array($urls);
         $rs = self::getContent($urls);
+
         if (is_array($rs)) {
-            $rt = is_array($urls) ? $rs : current($urls);
+            $rt = $isArray ? $rs : current($rs);
         }
         return $rt;
     }

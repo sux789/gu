@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ChgnSnap;
 use App\Models\Crontab;
 use App\Models\Snap;
 use App\Models\Symbol;
+use App\Services\Chgn\ChgnDetailSyncService;
+use App\Services\Chgn\ChgnSyncService;
 use App\Services\Cron\CronSnapService;
 use App\Services\Misc\CronControlService;
 use App\Services\Misc\CronStateService;
@@ -15,6 +18,7 @@ use App\Services\Snap\SnapSyncService;
 use App\Services\Snap\TxApiService;
 use App\Services\Symbol\ChgnSymbolService;
 use App\Services\Symbol\SymbolService;
+use App\Services\WebClient\SignChgnFetcher;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,8 +47,12 @@ class Sd extends Command
         // $rs=SnapCronDailyInitService::handle();
         // print_r($rs);
         // CronControlService::handle();
-       $rs= CronSnapService::hasInitToday();
-        var_dump($rs);
+       // $rs= ChgnSyncService::handle();
+        throw_if(true);
+        // ChgnDetailSyncService::handle();
+
+        ;
+        //print_r($rs);
         echo __CLASS__;
         return 0;
     }
