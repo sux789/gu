@@ -41,8 +41,18 @@ Artisan::command('sd {act=handle}', function (Sd $sd) {
 });
 
 
-Artisan::command('cron', function (\App\Console\Commands\Cron $cron) {
-    $cron->handle();
+Artisan::command('cron {act=handle}', function (\App\Console\Commands\Cron $cron) {
+    $act = $this->argument('act');
+    $act = $act?:'handle';
+    $class =get_class($cron);
+    $this->info("# cron $class::$act ");
+    $startTime=microtime(true);
+    if(method_exists($cron,$act)){
+        $cron->$act();
+    }
+    $spent=microtime(true);
+    $this->info("exec spent time {$spent} seconds");
+
 });
 Artisan::command('init_snap', function (\App\Console\Commands\Cron $cron) {
     $cron->initDailySnap();
