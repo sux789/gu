@@ -24,25 +24,19 @@ class CronRunService
             $cmd = "$class::$method";
             $ons = $config['ons'];
             foreach ($ons as $timeOn) {
-                if (self::checkTimeOn($timeOn, $cmd)) {
+                if (self::checkTimeOn($timeOn, $class)) {
                     $ins = App::make($class);
-                    if (!$ins->startable()) {
-                        continue;
-                    }
-                    $ins->$method();
-                    if ($ins->isFinished()) {
-                        CronStateService::setFinished($cmd);
-                    } elseif ($ins->isEmpty()) {
-                        CronStateService::setEmpty($cmd);
-                    } elseif ($ins->isAborted()) {
-                        CronStateService::setAborted($cmd);
+                    try {
+                        $ins->run();
+                    } catch (\Throwable $e) {
+                        $ins->setStateAborted();
                     }
                 }
             }
         }
     }
 
-    private function checkTimeOn($timeOn, $cmd)
+    private static function checkTimeOn($timeOn, $cmd)
     {
         // step 1 $week 检查星期
         $checkDay = true;

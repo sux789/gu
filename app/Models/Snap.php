@@ -22,6 +22,7 @@ class Snap extends Model
         'high',
         'low',
         'changepercent',
+        'turnoverratio',
         'pe',
         'mktcap',
         'nmc',

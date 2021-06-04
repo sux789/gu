@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Services\Cron;
+namespace App\Services\Cron\Commands;
 
 
 use App\Models\Snap;
+use App\Services\Cron\CommandBase;
 use App\Services\Snap\SnapSyncService;
 use Illuminate\Support\Facades\Date;
 
@@ -12,29 +13,35 @@ use Illuminate\Support\Facades\Date;
  * 日快照初始化
  * -- 用不可能同时停牌数据更新快照
  */
-class CommandInitializeSnap implements CommandInterface
+class TodaySnapInitializer extends CommandBase
 {
 
     const BEGIN_HOUR = '09:31';
 
     static $initSymbolSet = ['sh601398', 'sh600519', 'sh601318'];
 
-    static function handle()
+    function handle()
     {
-        if (!self::isDone()) {
-            self::initToday();
-        }else{
-            echo "dine";
+        self::initToday();
+
+        if (self::isFinished()) {
+            $this->setStateFinished();
+        } else {
+            $this->setStateAborted();
         }
-        return true;
     }
 
-    private static function initToday()
+    function startable()
+    {
+        return !self::isFinished();
+    }
+
+    public static function initToday()
     {
         return SnapSyncService::headle(self::$initSymbolSet);
     }
 
-    static function isDone(): bool
+    static function isFinished(): bool
     {
         $lastUpdateAt = self::getTimeByHour(self::BEGIN_HOUR);
         return (bool)Snap::where('updated_at', '>', $lastUpdateAt)
@@ -47,25 +54,5 @@ class CommandInitializeSnap implements CommandInterface
         $hour = trim($hour);
         $date = $date ?: Date::now()->toDateString();
         return "$date $hour";
-    }
-
-    static function startable()
-    {
-        return !self::isDone();
-    }
-
-    static function isAborted()
-    {
-        return !self::isDone();;
-    }
-
-    static function isEmpty()
-    {
-        return false;
-    }
-
-    static function isFinished()
-    {
-        return Snap::hasTodayTrade();
     }
 }

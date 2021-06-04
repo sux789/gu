@@ -1,41 +1,41 @@
 <?php
 
 
-namespace App\Services\Cron;
+namespace App\Services\Cron\Commands;
 
 
 use App\Models\Snap;
+use App\Services\Cron\CommandBase;
 use App\Services\Snap\SnapSyncService;
 use Illuminate\Support\Facades\Date;
 
 /**
  * 同步收盘价
  */
-class CommandInitializeClosed implements CommandInterface
+class ClosedInitializer extends CommandBase
 {
     const START_HOUR = '16:01';
 
-    static function handle()
+    function handle()
     {
-        if (self::startable()) {
-            $symbolSet = self::pluckUnRefreshed();
-            SnapSyncService::headle($symbolSet);
+        self::initClosed();
+
+        if (self::isFinished()) {
+            $this->setStateFinished();
+        } else {
+            $this->setStateAborted();
         }
     }
 
-    static function startable()
+    function startable()
     {
         return self::isTimeUp() && Snap::hasTodayTrade() && !self::isFinished();
     }
 
-    static function isAborted()
+    static function initClosed()
     {
-        return !self::isFinished();;
-    }
-
-    static function isEmpty()
-    {
-        return false;
+        $symbolSet = self::pluckUnRefreshed();
+        SnapSyncService::headle($symbolSet);
     }
 
 
@@ -46,7 +46,7 @@ class CommandInitializeClosed implements CommandInterface
 
     private static function pluckUnRefreshed($limit = 0)
     {
-        $date = Snap::lastTradeDate('date');
+        $date = Snap::lastTradeDate();
         $hour = self::START_HOUR;
         $lastCreateTime = "$date $hour";
 
@@ -55,12 +55,12 @@ class CommandInitializeClosed implements CommandInterface
             $obj->limit($limit);
         }
         $rs = $obj->pluck('symbol')->toArray();
-        dump($rs);
+
         return $rs;
     }
 
 
-    static function isTimeUp(): bool
+    private static function isTimeUp(): bool
     {
         $now = Date::now()->toDateTimeString();
         $date = Date::now()->toDateString();

@@ -48,17 +48,17 @@ class CronStateService
         CrontabModel::updateOrCreate(['cmd' => $cmd], $data);
     }
 
-    static function setFinished($cmd, $result = '')
+    static function setFinished($cmd, $remark = '')
     {
         $state = self::STATE_FISHED;
-        $data = compact('cmd', 'result', 'state');
+        $data = compact('cmd', 'remark', 'state');
         CrontabModel::updateOrCreate(['cmd' => $cmd], $data);
     }
 
-    static function setEmpty($cmd)
+    static function setEmpty($cmd, $remark = '')
     {
         $state = self::STATE_EMPTY;
-        $data = compact('cmd', 'state');
+        $data = compact('cmd', 'state', 'remark');
         CrontabModel::updateOrCreate(['cmd' => $cmd], $data);
     }
 
