@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class Snap extends Model
 {
     use HasFactory;
-    static $initSymbolSet= ['sh601398', 'sh600519', 'sh601318'];
+
+    static $initSymbolSet = ['sh601398', 'sh600519', 'sh601318'];
 
     protected $fillable = [
         'date',
@@ -49,5 +51,11 @@ class Snap extends Model
         $maxTradeDate = self::max('date');
         $today = Date::now()->toDateString();
         return min($maxTradeDate, $today);
+    }
+
+    static function listTradeDate($limit = 30)
+    {
+        $rs = self::orderBy('date', 'desc')->distinct()->limit($limit)->pluck('date');
+        return $rs ? $rs->toArray() : [];
     }
 }

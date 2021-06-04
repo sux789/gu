@@ -21,15 +21,17 @@ class QueryListener
     /**
      * Handle the event.
      *
-     * @param  QueryExecuted  $event
+     * @param QueryExecuted $event
      * @return void
      */
     public function handle(QueryExecuted $event)
     {
-        //
 
         $sql = str_replace("?", "'%s'", $event->sql);
         $log = vsprintf($sql, $event->bindings);
-        echo "\n", $log,"\n";
+        if (is_numeric(stripos(PHP_SAPI, 'cli'))) {
+            echo "\n:", $log, "\n";
+        }
+
     }
 }

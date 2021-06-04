@@ -30,7 +30,7 @@ class SnapSyncService
         $rs = TxSnapService::get($symbolSet);
         foreach ($rs as $item) {
             $symbol = $item['symbol'];
-            $rt[$symbol] = Snap::updateOrCreate(['symbol' => $symbol], $item);
+            $rt[$symbol] = Snap::updateOrCreate(['symbol' => $symbol, 'date' => $item['date']], $item);
         }
         return $rt;
     }
