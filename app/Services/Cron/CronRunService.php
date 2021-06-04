@@ -26,11 +26,7 @@ class CronRunService
             foreach ($ons as $timeOn) {
                 if (self::checkTimeOn($timeOn, $class)) {
                     $ins = App::make($class);
-                    try {
-                        $ins->run();
-                    } catch (\Throwable $e) {
-                        $ins->setStateAborted();
-                    }
+                    $ins->run();
                 }
             }
         }

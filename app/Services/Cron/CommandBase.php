@@ -3,8 +3,6 @@
 
 namespace App\Services\Cron;
 
-
-use App\Services\Cron\CronStateService;
 use Illuminate\Support\Facades\App;
 
 
@@ -13,15 +11,12 @@ use Illuminate\Support\Facades\App;
  */
 abstract class CommandBase
 {
-    protected $runState = 0;
-
-    protected static $ins = null;
 
     /**
      * 建议 主要逻辑和本函数分开,本函数执行主要逻辑和设置处理状态
      * @return mixed
      */
-    abstract function handle();
+    protected abstract function handle();
 
 
     function startable()
@@ -29,16 +24,19 @@ abstract class CommandBase
         return true;
     }
 
-    final static function run()
+    final function run()
     {
-        if (null === self::$ins) { // 定时任务,不同时进行
-            $ins = App::make(static::class);
-            if ($ins->startable()) {
-                CronStateService::setStarted($ins->getCommandName());
-                $ins->handle();
+        if ($this->startable()) {
+            $commandName = $this->getCommandName();
+            echo "\n### run $commandName ###\n";
+            CronStateService::setStarted($commandName);
+            try {
+                $this->handle();
+            } catch (\Throwable $e) {
+                $this->setStateAborted();
+                echo $e->getMessage();
             }
         }
-        self::$ins = null;
     }
 
     protected function setStateFinished($remark = '')
