@@ -5,7 +5,7 @@ namespace App\Services\Snap;
 
 
 use App\Models\Snap;
-use Illuminate\Support\Facades\DB;
+use App\Services\WebClient\TxSnapService;
 
 /**
  * 同步数据,根据代码抓取然后
@@ -27,7 +27,7 @@ class SnapSyncService
     private static function handleBySetp($symbolSet)
     {
         $rt = [];
-        $rs = \App\Services\WebClient\TxApiService::get($symbolSet);
+        $rs = TxSnapService::get($symbolSet);
         foreach ($rs as $item) {
             $symbol = $item['symbol'];
             $rt[$symbol] = Snap::updateOrCreate(['symbol' => $symbol], $item);

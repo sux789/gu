@@ -4,15 +4,14 @@
 namespace App\Services\WebClient;
 
 
-use App\Services\Snap\TxSnapFetcher;
 
-class TxApiService
+class TxSnapService
 {
     static $defaultSymbolSet = ['sh601398', 'sh600519'];
 
     static function lastTime()
     {
-        $rs = TxApiService::get(self::$defaultSymbolSet);
+        $rs = TxSnapFetcher::get(self::$defaultSymbolSet);
         $lastTime = '';
         foreach ($rs as $item) {
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\Snap;
+namespace App\Services\WebClient;
 
 
 use App\Common\Webgeter;

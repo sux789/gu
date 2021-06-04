@@ -5,7 +5,6 @@ namespace App\Services\Chgn;
 
 use App\Common\Webgeter;
 use App\Models\Chgn;
-use Illuminate\Support\Facades\DB;
 
 /**
  * 同步中国概念

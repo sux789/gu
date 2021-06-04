@@ -42,7 +42,7 @@ class CronRunService
         }
     }
 
-    static function checkTimeOn($timeOn, $cmd)
+    private function checkTimeOn($timeOn, $cmd)
     {
         // step 1 $week 检查星期
         $checkDay = true;
@@ -63,7 +63,7 @@ class CronRunService
         $now = Date::now()->toDateTimeString();
         $checkTime = ($now >= $startTime && $now < $endTime);
         if (!$checkTime) {
-            echo "#检查时间错误";
+            echo "\n{$cmd}检查时间错误";
             return false;
         }
 
@@ -76,7 +76,7 @@ class CronRunService
             $intervalTimeBegin = self::today();// 当天不存在
         }
         $exists = CronStateService::has($cmd, $intervalTimeBegin);
-        var_dump($exists);
+
         $checkInterval = !$exists; //
         if (!$checkInterval) {
             echo "$intervalTimeBegin 内已经执行了\n ";

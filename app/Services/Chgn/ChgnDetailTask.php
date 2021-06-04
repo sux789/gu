@@ -39,13 +39,13 @@ class ChgnDetailTask
      * 领取任务
      * @return mixed
      */
-    static function take()
+    static function take():array
     {
-        $rt = Chgn::where('fetch_state', self::FETCH_STATE_PROCESSING)
+        $rs = Chgn::where('fetch_state', self::FETCH_STATE_PROCESSING)
             ->whereNotIn('id', [700014, 700015, 700016, 700095, 700002, 730362])
             ->select(['id', 'fetch_page'])
-            ->first()
-            ->toArray();
+            ->first();
+        $rt = $rs ? $rs->toArray() : [];
         return $rt;
     }
 

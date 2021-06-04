@@ -6,8 +6,6 @@ namespace App\Services\Cron;
 
 use App\Models\Overbuy;
 use App\Models\Snap;
-use App\Services\Snap\SnapSyncService;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 /**
