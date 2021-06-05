@@ -19,38 +19,37 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+if ('local' == env('APP_ENV')) {
+    // sd means simple debug
+    Artisan::command('sd {act=handle}', function (Sd $sd) {
+        if ($argv = $this->arguments()) {
+            // dump($argv);
+        }
+        $class = get_class($this);
+        $act = $this->argument('act');
+        if ($act) {
+            $this->info("## exec $class->$act ##");
+        }
 
-Artisan::command('sd {act=handle}', function (Sd $sd) {
-    if ($argv = $this->arguments()) {
-        // dump($argv);
-    }
-    $class = get_class($this);
-    $act = $this->argument('act');
-    if ($act) {
-        $this->info("## exec $class->$act ##");
-    }
+        if (method_exists($sd, $act)) {
+            $sd->$act();
+        } else {
 
-    if (method_exists($sd, $act)) {
-        $sd->$act();
-    } else {
-
-        $this->info("# method $class->$act  not exists ");
-    }
-
-
-});
-
+            $this->info("# method $class->$act  not exists ");
+        }
+    });
+}
 
 Artisan::command('cron {act=handle}', function (\App\Console\Commands\Cron $cron) {
     $act = $this->argument('act');
-    $act = $act?:'handle';
-    $class =get_class($cron);
+    $act = $act ?: 'handle';
+    $class = get_class($cron);
     $this->info("# cron $class::$act ");
-    $startTime=microtime(true);
-    if(method_exists($cron,$act)){
+    $startTime = microtime(true);
+    if (method_exists($cron, $act)) {
         $cron->$act();
     }
-    $spent=microtime(true);
+    $spent = microtime(true);
     $this->info("exec spent time {$spent} seconds");
 
 });
