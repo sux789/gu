@@ -19,6 +19,7 @@ class CronStateService
     const STATE_ABORT = 300;
     const STATE_EMPTY = 500;
     const STATE_FISHED = 900;
+
     static $stateDesc = [
         self::STATE_START => '运行中',
         self::STATE_ABORT => '异常退出',
@@ -29,16 +30,29 @@ class CronStateService
 
     static function setStarted($cmd, $remark = '')
     {
-        $cron = CrontabModel::where('cmd', $cmd)->first();
-        if ($cron) {
-            $sql_bak = "insert into crontabs_logs select * from crontabs where id={$cron->id}";
+        $rt = false;
+
+        if (!self::hasRunning($cmd)) {
+            // step 1 backup && clear
+            $sql_bak = "insert into crontabs_logs select * from crontabs where cmd='$cmd' ";
             DB::insert($sql_bak);
-            $cron->delete();
+            CrontabModel::where('cmd', $cmd)->delete();
+
+            // step 2 state new
+            $state = self::STATE_START;
+            $data = compact('cmd', 'remark', 'state');
+            $rt = CrontabModel::create($data);
         }
 
-        $state = self::STATE_START;
-        $data = compact('cmd', 'remark', 'state');
-        return CrontabModel::create($data);
+        return $rt;
+    }
+
+    static function hasRunning($cmd, $expire = null): int
+    {
+        $id = CrontabModel::where('cmd', $cmd)
+            ->where('state', self::STATE_START)
+            ->value('id');
+        return boolval($id);
     }
 
     static function setAborted($cmd, $remark = '')

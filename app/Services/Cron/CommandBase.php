@@ -29,12 +29,14 @@ abstract class CommandBase
         if ($this->startable()) {
             $commandName = $this->getCommandName();
             echo "\n### run $commandName ###\n";
-            CronStateService::setStarted($commandName);
-            try {
-                $this->handle();
-            } catch (\Throwable $e) {
-                $this->setStateAborted();
-                echo $e->getMessage();
+            $started=CronStateService::setStarted($commandName);
+            if($started){
+                try {
+                    $this->handle();
+                } catch (\Throwable $e) {
+                    $this->setStateAborted();
+                    echo $e->getMessage();
+                }
             }
         }
     }

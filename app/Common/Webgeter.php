@@ -11,7 +11,7 @@ class Webgeter
     static function get($urls, $callback = null)
     {
         $rt = null;
-        $isArray=is_array($urls);
+        $isArray = is_array($urls);
         $rs = self::getContent($urls);
 
         if (is_array($rs)) {

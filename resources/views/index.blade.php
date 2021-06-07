@@ -18,7 +18,23 @@
     </style>
 </head>
 <body>
-
+<div class="container ">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            {{--<a class="nav-link active" href="#">qqloing</a>--}}
+            <a nav-link  href="http://user.kono.top/Oauth/login?type=qq"><img src="https://wiki.connect.qq.com/wp-content/uploads/2021/01/bt_blue_24X24.png">qq登陆</a>
+        </li>
+        {{--<li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>--}}
+    </ul>
+</div>
 <div class="container-xl ">
     <div class="row ">
         <div class="col  border-dark ">

@@ -11,8 +11,8 @@ class Overbuy extends Model
 
     static function listLastSymbol($dayOffset = 5)
     {
-        $statDate = self::getDateOffset($dayOffset);
-        $rs = self::where('date', '>=', '$statDate')->distinct()->pluck('symbol');
+        $startDate = self::getDateOffset($dayOffset);
+        $rs = self::where('date', '>=', $startDate)->distinct()->pluck('symbol');
         return $rs ? $rs->toArray() : [];
     }
 

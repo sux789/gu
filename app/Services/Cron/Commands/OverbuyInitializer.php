@@ -27,7 +27,7 @@ class OverbuyInitializer extends CommandBase
 
     function startable()
     {
-        return ClosedInitializer::isFinished() && !self::isFinished();
+        return !self::isFinished() && ClosedInitializer::isFinished() ;
     }
 
     static function initOverBy()

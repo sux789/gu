@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Date;
  */
 class ClosedInitializer extends CommandBase
 {
-    const START_HOUR = '16:01';
+    const START_HOUR = '16:30';
 
     function handle()
     {
@@ -46,11 +46,11 @@ class ClosedInitializer extends CommandBase
 
     private static function pluckUnRefreshed($limit = 0)
     {
-        $date = Snap::lastTradeDate();
+        $lastDate = Snap::lastTradeDate();
         $hour = self::START_HOUR;
-        $lastCreateTime = "$date $hour";
+        $lastCreateTime = "$lastDate $hour";
 
-        $obj = Snap::where('updated_at', '<', $lastCreateTime);
+        $obj = Snap::whereBetween('updated_at', [$lastDate, $lastCreateTime]);
         if ($limit) {
             $obj->limit($limit);
         }
