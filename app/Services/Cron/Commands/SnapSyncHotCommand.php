@@ -10,7 +10,7 @@ use App\Services\Snap\SnapSyncService;
 use App\Services\Snap\TradeDayService;
 
 /**
- * 同步收盘价
+ * 同步热点股票
  */
 class SnapSyncHotCommand extends CommandBase
 {
@@ -39,7 +39,7 @@ class SnapSyncHotCommand extends CommandBase
         return !self::pluckUnRefreshed(1);
     }
 
-    private static function pluckUnRefreshed($limit = 0)
+    static function pluckUnRefreshed($limit = 0)
     {
         $date = TradeDayService::lastDate();
         $lastUnixTime = time() - 60;

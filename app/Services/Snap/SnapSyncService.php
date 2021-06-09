@@ -5,6 +5,7 @@ namespace App\Services\Snap;
 
 
 use App\Models\Snap;
+use App\Services\WebClient\TxSnapFetcher;
 use App\Services\WebClient\TxSnapService;
 
 /**
@@ -13,11 +14,14 @@ use App\Services\WebClient\TxSnapService;
 class SnapSyncService
 {
 
+    // 一次处理多少个股票,应该TxSnapFetcher::PAGE_SIZE即800倍数
+    const CHUNK_SIZE = 800;
+
     static function headle($symbolSet)
     {
         $rt = [];
         // 大数据分页, 内存和网络 削峰
-        foreach (array_chunk((array)$symbolSet, 1000) as $chunk) {
+        foreach (array_chunk((array)$symbolSet, self::CHUNK_SIZE) as $chunk) {
             $rs = self::handleBySetp($chunk);
             $rt = array_merge($rs);
         }
