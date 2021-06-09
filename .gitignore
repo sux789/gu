@@ -15,4 +15,4 @@ yarn-error.log
 /.vscode
 /cron.over.log
 /public/t.php
-app/Console/Commands/Sd.php
+/app/Console/Commands/Sd.php
