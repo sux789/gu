@@ -52,5 +52,21 @@ return [
         ],
 
     ],
+    // 初始化超买涨停
+    [
+        'cmd' => [
+            'class' => \App\Services\Cron\Commands\MaRebuildCommand::class,
+            'method' => 'handle',// default handle
+        ],
+        'ons' => [
+            [
+                'begin' => '16:41',
+                'end' => '16:43',
+                'interval_minute' => 10, //  间隔分钟 0  是当天执行一次
+                'days' => [1, 2, 3, 4, 5], // 星期
+            ],
+        ],
+
+    ],
 
 ];
