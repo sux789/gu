@@ -8,7 +8,7 @@ use App\Models\Chgn;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 概念对应股票爬虫任务管理
+ * 概念对应代码明细爬虫任务管理
  * 1 请求分页,每次请求数量会有限制 2 支持任务继续,新浪有反爬虫机制
  */
 class ChgnDetailTask
@@ -19,6 +19,12 @@ class ChgnDetailTask
         self::FETCH_STATE_PROCESSING => '待处理',
         self::FETCH_STATE_CLOSED => '已经完成关闭',
     ];
+
+    /**
+     * 不在抓取的概念,比如大中小盘,没有意义
+     * @var int[]
+     */
+    static $disabledIdSet = [700014, 700015, 700016, 700095, 700002, 730362];
 
     /**
      * 初始化,重新全部爬一遍
@@ -38,10 +44,10 @@ class ChgnDetailTask
      * 领取任务
      * @return mixed
      */
-    static function take():array
+    static function take(): array
     {
         $rs = Chgn::where('fetch_state', self::FETCH_STATE_PROCESSING)
-            ->whereNotIn('id', [700014, 700015, 700016, 700095, 700002, 730362])
+            ->whereNotIn('id', self::$disabledIdSet)
             ->select(['id', 'fetch_page'])
             ->first();
         $rt = $rs ? $rs->toArray() : [];

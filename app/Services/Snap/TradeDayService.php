@@ -8,8 +8,8 @@ use App\Models\Snap;
 use Illuminate\Support\Facades\Date;
 
 /**
- * 股票快照
- * @note 所有方法依赖方法lastDateSetCache,对减少bug有好处
+ * 交易日服务
+ * @note 所有方法依赖方法最后一个私有方法的lastDateSetCache的变量缓存,对减少bug有好处
  */
 class TradeDayService
 {
