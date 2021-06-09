@@ -5,14 +5,14 @@ namespace App\Services\Cron\Commands;
 
 
 use App\Models\Overbuy;
-use App\Models\Snap;
 use App\Services\Cron\CommandBase;
+use App\Services\Snap\TradeDayService;
 use Illuminate\Support\Facades\DB;
 
 /**
  * 收盘涨停处理
  */
-class OverbuyInitializer extends CommandBase
+class OverbuyInitCommand extends CommandBase
 {
     function handle()
     {
@@ -27,12 +27,12 @@ class OverbuyInitializer extends CommandBase
 
     function startable()
     {
-        return !self::isFinished() && ClosedInitializer::isFinished() ;
+        return !self::isFinished() && SnapSyncClosedCommand::isFinished() ;
     }
 
     static function initOverBy()
     {
-        $date = Snap::lastTradeDate();
+        $date = TradeDayService::lastDate();
         $sql = "INSERT INTO overbuys ( symbol, date, over_buy, changepercent ) SELECT
             symbol,
             date,
@@ -49,7 +49,7 @@ class OverbuyInitializer extends CommandBase
 
     static function isFinished(): bool
     {
-        $date = Snap::lastTradeDate();
+        $date = TradeDayService::lastDate();
         $val = Overbuy::where('date', $date)->value('id');
         return !empty($val);
     }

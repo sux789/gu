@@ -4,7 +4,7 @@
 namespace App\Services\WebClient;
 
 /**
- * 腾讯股票快照解析器,
+ * 腾讯股票快照解析器
  * 根据新浪改了数据库字段名,代码没有再修改
  */
 class TxSnapParser

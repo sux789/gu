@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 快照,实时数据
+ */
 class Snap extends Model
 {
     use HasFactory;
@@ -33,29 +36,4 @@ class Snap extends Model
         'vol',
     ];
 
-    /**
-     * 今日是否存在交易
-     * 需要初始化后定时任务后才知道,所以用has
-     */
-    static function hasTodayTrade()
-    {
-        $todayTime = Date::now()->toDateString();
-        return (bool)Snap::where('trade_time', '>', $todayTime)
-            ->whereIn('symbol', self::$initSymbolSet)
-            ->value('id');
-    }
-
-
-    static function lastTradeDate()
-    {
-        $maxTradeDate = self::max('date');
-        $today = Date::now()->toDateString();
-        return min($maxTradeDate, $today);
-    }
-
-    static function listTradeDate($limit = 30)
-    {
-        $rs = self::orderBy('date', 'desc')->distinct()->limit($limit)->pluck('date');
-        return $rs ? $rs->toArray() : [];
-    }
 }

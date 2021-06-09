@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * 涨停记录
+ * Class Overbuy
+ * @package App\Models
+ */
 class Overbuy extends Model
 {
     use HasFactory;

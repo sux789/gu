@@ -3,8 +3,6 @@
 
 namespace App\Services\Cron;
 
-use Illuminate\Support\Facades\App;
-
 
 /**
  * 定时任务命令:便于外部统一命令调用,异常处理和状态记录

@@ -6,7 +6,7 @@ return [
     // 每日初始化,检查当天是否有快照
     [
         'cmd' => [
-            'class' => \App\Services\Cron\Commands\TodaySnapInitializer::class,
+            'class' => \App\Services\Cron\Commands\SnapInitCommand::class,
             'method' => 'handle',// default handle
         ],
         'ons' => [
@@ -23,7 +23,7 @@ return [
     // 初始化收盘
     [
         'cmd' => [
-            'class' => \App\Services\Cron\Commands\ClosedInitializer::class,
+            'class' => \App\Services\Cron\Commands\SnapSyncClosedCommand::class,
             'method' => 'handle',// default handle
         ],
         'ons' => [
@@ -39,7 +39,7 @@ return [
     // 初始化超买涨停
     [
         'cmd' => [
-            'class' => \App\Services\Cron\Commands\OverbuyInitializer::class,
+            'class' => \App\Services\Cron\Commands\OverbuyInitCommand::class,
             'method' => 'handle',// default handle
         ],
         'ons' => [

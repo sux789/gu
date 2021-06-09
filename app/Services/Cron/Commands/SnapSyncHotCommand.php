@@ -7,17 +7,14 @@ namespace App\Services\Cron\Commands;
 use App\Models\Snap;
 use App\Services\Cron\CommandBase;
 use App\Services\Snap\SnapSyncService;
-use Illuminate\Support\Facades\Date;
+use App\Services\Snap\TradeDayService;
 
 /**
  * 同步收盘价
  */
-class HotSnapRefresher extends CommandBase
+class SnapSyncHotCommand extends CommandBase
 {
-    static $period = [
-        ['09:40', '11:29'],
-        ['13:01', '14:58'],
-    ];
+
 
     function handle()
     {
@@ -27,7 +24,7 @@ class HotSnapRefresher extends CommandBase
 
     function startable()
     {
-        return self::isTimeUp() && Snap::hasTodayTrade() && !self::isFinished();
+        return TradeDayService::nowIsTrading() && !self::isFinished();
     }
 
     static function refresh()
@@ -44,7 +41,7 @@ class HotSnapRefresher extends CommandBase
 
     private static function pluckUnRefreshed($limit = 0)
     {
-        $date = Snap::lastTradeDate();
+        $date = TradeDayService::lastDate();
         $lastUnixTime = time() - 60;
         $lastCreateTime = date('Y-m-d H:i:s', $lastUnixTime);
 
@@ -58,18 +55,4 @@ class HotSnapRefresher extends CommandBase
         return $rs;
     }
 
-    static function isTimeUp($now = null): bool
-    {
-        $now = $now ?: Date::now()->toDateTimeString();
-        $today = Date::now()->toDateString();
-        $rt = false;
-        foreach (self::$period as $item) {
-            list($startHour, $endHour) = $item;
-            if ($now > "$today $startHour" && $now < "$today $endHour") {
-                $rt = true;
-                break;
-            }
-        }
-        return $rt;
-    }
 }

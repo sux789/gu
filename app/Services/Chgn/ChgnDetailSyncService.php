@@ -7,7 +7,7 @@ use App\Common\Webgeter;
 use App\Models\ChgnSnap;
 
 /**
- * 同步概念对应股票
+ * 概念对应股票明细
  * 用于得到股票代码,得到概念
  * 执行 每周日凌晨进行一次 refreshAll
  */

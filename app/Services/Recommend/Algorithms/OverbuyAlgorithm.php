@@ -1,17 +1,18 @@
 <?php
 
 
-namespace App\Services\Recommend;
+namespace App\Services\Recommend\Algorithms;
 
 
 use App\Models\Overbuy;
 use App\Models\Snap;
+use App\Services\Snap\TradeDayService;
 
 class OverbuyAlgorithm
 {
-    static function lists($days = 5)
+    static function get($days = 5)
     {
-        $dateList = Snap::listTradeDate();
+        $dateList = TradeDayService::lastDateSet();
         $today = $dateList[0];
 
         $overbuySymbols = Overbuy::listLastSymbol(10);

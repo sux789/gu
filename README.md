@@ -1,37 +1,34 @@
-### 3 分钟了解如何进入开发
+# 股票推荐定时任务代码说明
 
-欢迎使用云效 Codeup，通过阅读以下内容，你可以快速熟悉 Codeup ，并立即开始今天的工作。
+1. 需要和风格
+    1. 数据库和代码风格按laravel习惯
+    2. 没有任何性能:用户访问定时任务算法结果,没有任何性能压力
+2. 展示重点拆分
+    1. 按目录拆分
+    2. 类拆分足够小,非Service结尾都是拆分出来
+    3. 拆分函数小
 
-### 提交**文件**
+## 1 分类说明
 
-首先，你需要了解在 Codeup 中如何提交代码文件，跟着文档「[__提交第一行代码__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e7546fd9001aee81fd)」一起操作试试看吧。
+### 1.1 目录app/Services/Chgn 热门概念
 
-### 开启扫描
+概念详情爬虫服务ChgnDetailSyncService.php,拆出爬虫任务ChgnDetailTask.php
 
-开发过程中，为了更好的管理你的代码资产，Codeup 内置了「[__代码规约扫描__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e8546fd9001aee821c)」和「[__敏感信息检测__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e8546fd9001aee821b)」服务，你可以在代码库设置-集成与服务中一键开启，开启后提交或合并请求的变更将自动触发扫描，并及时提供结果反馈。
+### 1.2 目录app/Services/Cron 定时任务,比crontab多了管理
 
-![](https://img.alicdn.com/tfs/TB1nRDatoz1gK0jSZLeXXb9kVXa-1122-380.png "")
+拆分未状态管理,运行服务,命令.扩展新任务则再Commands目录里面加文件
 
-![](https://img.alicdn.com/tfs/TB1PrPatXY7gK0jSZKzXXaikpXa-1122-709.png "")
+### 1.3 目录app/Services/Snap 股票快照
 
-### 代码评审
+1. 拆分出同步SnapSyncService.php服务,异步抓取和削峰处理
+2. 拆分出交易日处理,TradeDayService.php,里面方法用同一个缓存减少bug
 
-功能开发完毕后，通常你需要发起「[__代码合并和评审__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e8546fd9001aee8216)」，Codeup 支持多人协作的代码评审服务，你可以通过「[__保护分支__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e9546fd9001aee8221)」策略及「[__合并请求设置__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e9546fd9001aee8224)」对合并过程进行流程化管控，同时提供 WebIDE 在线代码评审及冲突解决能力，让你的评审过程更加流畅。
+### 1.4 app/Services/WebClient
 
-![](https://img.alicdn.com/tfs/TB1XHrctkP2gK0jSZPxXXacQpXa-1432-887.png "")
+TxSnapService.php爬虫 由抓取TxSnapFetcher.php和解析TxSnapParser.php组合而成
 
-![](https://img.alicdn.com/tfs/TB1V3fctoY1gK0jSZFMXXaWcVXa-1432-600.png "")
+## 2 总结
 
-### 编写文档
-
-项目推进过程中，你的经验和感悟可以直接记录到 Codeup 代码库的「[__文档__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e8546fd9001aee8213)」内，让智慧可视化。
-
-![](https://img.alicdn.com/tfs/TB1BN2ateT2gK0jSZFvXXXnFXXa-1432-700.png "")
-
-### 成员协作
-
-是时候邀请成员一起编写卓越的代码工程了，请点击右上角「成员」邀请你的小伙伴开始协作吧！
-
-### 更多
-
-Git 使用教学、高级功能指引等更多说明，参见[__Codeup帮助文档__](https://thoughts.aliyun.com/sharespace/5e8c37eb546fd9001aee8242/docs/5e8c37e6546fd9001aee81fa)。
+1. 拆分是**我代码bug极少和易理解原因**,个人代码只有分成小目标才是最有用的.  
+   很多技术问题和进度问题都来自不清晰  
+2. 通常大多数人实现了这样定时任务是一堆很难理解代码,对后续工作是极大浪费

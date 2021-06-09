@@ -5,11 +5,10 @@ namespace App\Services\Chgn;
 
 
 use App\Models\Chgn;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * 爬虫概念对应股票快照
+ * 概念对应股票爬虫任务管理
  * 1 请求分页,每次请求数量会有限制 2 支持任务继续,新浪有反爬虫机制
  */
 class ChgnDetailTask

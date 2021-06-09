@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Date;
  * 日快照初始化
  * -- 用不可能同时停牌数据更新快照
  */
-class TodaySnapInitializer extends CommandBase
+class SnapInitCommand extends CommandBase
 {
 
     const BEGIN_HOUR = '09:31';

@@ -7,12 +7,13 @@ namespace App\Services\Cron\Commands;
 use App\Models\Snap;
 use App\Services\Cron\CommandBase;
 use App\Services\Snap\SnapSyncService;
+use App\Services\Snap\TradeDayService;
 use Illuminate\Support\Facades\Date;
 
 /**
  * 同步收盘价
  */
-class ClosedInitializer extends CommandBase
+class SnapSyncClosedCommand extends CommandBase
 {
     const START_HOUR = '16:30';
 
@@ -29,7 +30,7 @@ class ClosedInitializer extends CommandBase
 
     function startable()
     {
-        return self::isTimeUp() && Snap::hasTodayTrade() && !self::isFinished();
+        return self::isTimeUp() && TradeDayService::todayIsTradingDay() && !self::isFinished();
     }
 
     static function initClosed()
@@ -46,7 +47,7 @@ class ClosedInitializer extends CommandBase
 
     private static function pluckUnRefreshed($limit = 0)
     {
-        $lastDate = Snap::lastTradeDate();
+        $lastDate = TradeDayService::lastDate();
         $hour = self::START_HOUR;
         $lastCreateTime = "$lastDate $hour";
 
@@ -63,10 +64,12 @@ class ClosedInitializer extends CommandBase
     private static function isTimeUp(): bool
     {
         $now = Date::now()->toDateTimeString();
-        $date = Date::now()->toDateString();
-        $starTime = "$date " . self::START_HOUR;
-        return $now > $starTime;
+        return $now > self::getStartTime();
     }
 
-
+    static function getStartTime(): string
+    {
+        $date = Date::now()->toDateString();
+        return "$date " . self::START_HOUR;
+    }
 }

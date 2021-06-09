@@ -8,7 +8,7 @@ use App\Models\Snap;
 use App\Services\WebClient\TxSnapService;
 
 /**
- * 同步数据,根据代码抓取然后
+ * 快照同步服务
  */
 class SnapSyncService
 {

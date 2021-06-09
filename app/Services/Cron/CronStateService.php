@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * 任务计划执行状态管理
- * Class CronStateService
- * @package App\Services\Cron
+ * @note 比crontab -e 多了简单管理
  */
 class CronStateService
 {

@@ -20,11 +20,11 @@ class ChgnSyncService
         $map = self::fetch();
         foreach ($map as $id => $title) {
             $data = compact('id', 'title');
-            Chgn::updateOrCreate(['id' => $id,'title'=>$title], $data);
+            Chgn::updateOrCreate(['id' => $id, 'title' => $title], $data);
         }
     }
 
-    static function fetch()
+    private static function fetch()
     {
         $content = Webgeter::get(self::$url);
         $rt = [];

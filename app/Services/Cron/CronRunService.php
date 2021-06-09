@@ -5,14 +5,12 @@ namespace App\Services\Cron;
 
 use App\Services\Snap\SnapCronDailyInitService;
 use App\Services\Snap\SnapSnapCronFinishDateService;
-use GuzzleHttp\Promise\Promise;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 
 /**
  * 任务计划运行控制,便于管理
- * Class CronControlService
- * @package App\Services\Cron
+ * @note 直接用crontab服务,不用这个类也许
  */
 class CronRunService
 {

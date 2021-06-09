@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Snap;
 use App\Services\Chgn\ChgnDetailSyncService;
 use App\Services\Cron\CronRunService;
-use App\Services\Cron\CronStateService;
 use App\Services\Cron\SnapDayInitializer;
 use App\Services\Misc\CronControlService;
 use Illuminate\Console\Command;
